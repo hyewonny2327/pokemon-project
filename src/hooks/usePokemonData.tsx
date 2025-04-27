@@ -9,17 +9,19 @@ export function usePokemonData() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchPokemon() {
-      try {
-        const data = await getRandomPokemonInfo();
-        setPokemon(data);
-      } catch (error) {
-        console.log("포켓몬 불러오기 실패", error);
-      } finally {
-        setIsLoading(false);
-      }
+  const fetchPokemon = async () => {
+    try {
+      const data = await getRandomPokemonInfo();
+      setPokemon(data);
+      console.log(data);
+    } catch (error) {
+      console.log("포켓몬 불러오기 실패", error);
+    } finally {
+      setIsLoading(false);
     }
-  });
-  return { pokemon, isLoading };
+  };
+  useEffect(() => {
+    fetchPokemon();
+  }, []);
+  return { pokemon, isLoading, refetch: fetchPokemon };
 }
